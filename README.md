@@ -2,64 +2,95 @@
 
 Two-track defensive research: GPU/TPU injection analysis + software observability testbed for multimodal AI systems.
 
-## Research Questions
+## Project Structure
 
-| Q | Answer | Evidence |
-|---|--------|----------|
-| GPU injection? | YES | 462-float buffer overflow (10.2x) |
-| TPU injection? | YES | 4 methods (XLA, overflow, CISC, DMA) |
-| Supply chain? | YES | 8 attack vectors identified |
+```
+ai-spy/
+├── track1_injection/           GPU/TPU injection research
+│   ├── README.md              Track 1 overview and quick start
+│   ├── gpu_poc.py             GPU buffer overflow demo
+│   ├── dpu_poc.py             TPU/DPU injection demo
+│   ├── test_gpu_injection.py  GPU attack surface tests
+│   └── test_tpu_injection.py  TPU attack methods tests
+│
+├── track2_observability/       Software observability testbed
+│   ├── README.md              Track 2 overview and quick start
+│   ├── gpu_wrapper.py         Process-level observability wrapper
+│   ├── dpu_proxy.py           FastAPI HTTP proxy for observability
+│   ├── run_dpu_case.py        Main test runner
+│   ├── summarize_results.py   Results aggregator
+│   ├── requirements.txt       Python dependencies
+│   ├── prompts/               Test workloads
+│   └── results/               CSV metric outputs
+│
+├── docs/                       Documentation
+│   ├── INDEX.md               GPU/TPU injection findings
+│   └── OBSERVABILITY.md       Testbed setup and methodology
+│
+└── README.md                  This file
+```
 
 ## Quick Start
 
-```bash
-# Track 1: GPU/TPU Injection Research
-python3 gpu_poc.py && python3 test_gpu_injection.py
-python3 dpu_poc.py && python3 test_tpu_injection.py
+### Track 1: GPU/TPU Injection Research
 
-# Track 2: Observability Testbed
-python3 run_dpu_case.py        # GPU-side wrapper
-python3 dpu_proxy.py            # DPU-side proxy
-python3 summarize_results.py    # Analyze metrics
+```bash
+cd track1_injection/
+python3 gpu_poc.py
+python3 dpu_poc.py
+python3 test_gpu_injection.py
+python3 test_tpu_injection.py
 ```
+
+### Track 2: Observability Testbed
+
+```bash
+cd track2_observability/
+pip install -r requirements.txt
+python3 run_dpu_case.py        # GPU-side wrapper test
+python3 summarize_results.py   # Generate report
+```
+
+## Research Questions & Findings
+
+| Q | Answer | Evidence |
+|---|--------|----------|
+| GPU injection? | YES | 462-float buffer overflow (10.2x magnitude) |
+| TPU injection? | YES | 4 methods verified (XLA, overflow, CISC, DMA) |
+| Supply chain? | YES | 8 attack vectors identified |
+| Observability leakage? | YES | Timing & memory patterns reveal workload structure |
 
 ## Track 1: GPU/TPU Injection
 
-**Files:** gpu_poc.py, dpu_poc.py, test_gpu_injection.py, test_tpu_injection.py
+**Research:** Can GPU/TPU accelerators be exploited for malware injection?
 
-GPU: Buffer overflow in CUDA kernel | TPU: XLA interception + integer overflow + CISC injection + DMA exploit
+**Methods:**
+- GPU: Buffer overflow in CUDA kernel
+- TPU: XLA compiler pass interception + integer overflow + CISC injection + DMA exploit
 
-See INDEX.md for full research details, threat assessment, and defenses.
+**Files:** See `track1_injection/README.md`
 
 ## Track 2: Observability Testbed
 
-**Files:** gpu_wrapper.py, dpu_proxy.py, run_dpu_case.py, summarize_results.py
+**Research:** What can software observability layers infer about AI workloads without touching weights?
 
-Study what software observability layers (wrappers, proxies) can infer about workloads without touching model weights.
+**Methods:**
+- GPU-side: Process wrapper measuring latency, memory, throughput
+- DPU-side: HTTP proxy measuring request metadata and response patterns
 
-See OBSERVABILITY.md for setup, tech stack, metrics, and alignment with multimodal AI inspection.
-
-## Files
-
-| File | Lines | Purpose |
-|------|-------|---------|
-| gpu_poc.py | 11 | GPU buffer overflow demo |
-| dpu_poc.py | 31 | TPU/DPU injection demo |
-| test_gpu_injection.py | 49 | GPU attack surface |
-| test_tpu_injection.py | 82 | TPU attack surface |
-| gpu_wrapper.py | 46 | Process observability |
-| dpu_proxy.py | 46 | HTTP proxy observability |
-| run_dpu_case.py | 36 | Test runner |
-| summarize_results.py | 28 | Results aggregator |
+**Files:** See `track2_observability/README.md`
 
 ## Documentation
 
-- **INDEX.md** - GPU/TPU injection research findings, threat model, defenses
-- **OBSERVABILITY.md** - Testbed setup, tech stack, metrics, job alignment
+- **docs/INDEX.md** - Complete GPU/TPU injection research findings
+- **docs/OBSERVABILITY.md** - Testbed methodology, setup, and defenses
 
 ## Requirements
 
-Python 3.8+, NumPy (injection tests), psutil/FastAPI/pandas (observability testbed)
+Python 3.8+
+
+**Track 1:** NumPy (for simulations)
+**Track 2:** psutil, FastAPI, uvicorn, pandas, NumPy
 
 ## Disclaimer
 
