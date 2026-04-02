@@ -3,7 +3,6 @@ import fastapi
 import uvicorn
 import requests
 import time
-import json
 from pathlib import Path
 from datetime import datetime
 

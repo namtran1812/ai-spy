@@ -102,13 +102,3 @@ if dma_exploit.trigger_size_mismatch():
     print(f"DMA Exploit: {claimed_gb}GB claimed vs {actual_gb}GB actual ({claimed_gb/actual_gb:.0f}x size mismatch) - SUCCESS")
 
 print("test_tpu_injection.py: SUCCESSFUL")
-
-class DMAOverflowAttack:
-    def trigger_dma_overflow(self):
-        return True
-
-dma_attack = DMAOverflowAttack()
-if dma_attack.trigger_dma_overflow():
-    print("[+] DMA Exploit: Size mismatch exploitation verified ✓")
-
-print("[+] test_tpu_injection.py: SUCCESSFUL ✓")

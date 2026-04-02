@@ -34,7 +34,7 @@ gpu_simulator.allocate("model_weights_layer1", 1024 * 1024)
 gpu_simulator.allocate("activations", 256 * 1024)
 output_offset = gpu_simulator.allocate("output", 50)
 
-overflow = gpu_simulator.write_kernel_data("output", 512)
+gpu_simulator.write_kernel_data("output", 512)
 corrupted_floats = gpu_simulator.check_memory_corruption("output")
 overflow_ratio = 512 / 50
 print(f"GPU Overflow: {512 - 50} floats corrupted ({overflow_ratio:.1f}x buffer size) - SUCCESS")
