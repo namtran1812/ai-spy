@@ -1,73 +1,66 @@
-# GPU/TPU Malware Injection Research
+# AI Spy: GPU/TPU Injection & Observability Research
 
-Research package demonstrating GPU/TPU injection attack vectors and proof-of-concepts targeting AI inference systems.
+Two-track defensive research: GPU/TPU injection analysis + software observability testbed for multimodal AI systems.
 
-## Overview
+## Research Questions
 
-This repository contains:
-- **GPU PoC** (gpu_poc.py): CUDA buffer overflow mechanism demonstration
-- **DPU/TPU PoC** (dpu_poc.py): TPU/DPU injection methods including XLA compiler pass interception and training spy
-- **GPU Test Suite** (test_gpu_injection.py): Full GPU attack surface simulation with supply chain analysis
-- **TPU Test Suite** (test_tpu_injection.py): All 4 TPU attack methods with quantitative metrics
-- **Research Documentation** (INDEX.md): Complete Q&A reference with findings and defenses
+| Q | Answer | Evidence |
+|---|--------|----------|
+| GPU injection? | YES | 462-float buffer overflow (10.2x) |
+| TPU injection? | YES | 4 methods (XLA, overflow, CISC, DMA) |
+| Supply chain? | YES | 8 attack vectors identified |
 
 ## Quick Start
 
 ```bash
-python3 gpu_poc.py      # GPU buffer overflow demo
-python3 dpu_poc.py      # TPU/DPU injection demo
-python3 test_gpu_injection.py   # GPU attack surface tests
-python3 test_tpu_injection.py   # TPU attack method tests
+# Track 1: GPU/TPU Injection Research
+python3 gpu_poc.py && python3 test_gpu_injection.py
+python3 dpu_poc.py && python3 test_tpu_injection.py
+
+# Track 2: Observability Testbed
+python3 run_dpu_case.py        # GPU-side wrapper
+python3 dpu_proxy.py            # DPU-side proxy
+python3 summarize_results.py    # Analyze metrics
 ```
 
-## Research Questions Answered
+## Track 1: GPU/TPU Injection
 
-**Q1: Can GPU kernels be exploited for malware injection?**
-- YES: 462-float buffer overflow demonstrated (10.2x buffer size)
+**Files:** gpu_poc.py, dpu_poc.py, test_gpu_injection.py, test_tpu_injection.py
 
-**Q2: Can TPU/DPU accelerators be exploited?**
-- YES: 4 attack methods verified (XLA pass, integer overflow, CISC injection, DMA exploit)
+GPU: Buffer overflow in CUDA kernel | TPU: XLA interception + integer overflow + CISC injection + DMA exploit
 
-**Q3: What supply chain vectors enable injection?**
-- 8 vectors identified: PyPI, model hubs, LD_PRELOAD, build tools, etc.
+See INDEX.md for full research details, threat assessment, and defenses.
 
-## Attack Vectors
+## Track 2: Observability Testbed
 
-**GPU (4 vectors):**
-- Buffer overflow in kernel computation
-- Weight poisoning during training
-- Activation hijacking
-- Model substitution
+**Files:** gpu_wrapper.py, dpu_proxy.py, run_dpu_case.py, summarize_results.py
 
-**TPU/DPU (4 vectors):**
-- XLA compiler pass interception
-- Integer overflow in shape calculations
-- CISC instruction injection
-- DMA transfer size mismatch exploitation
+Study what software observability layers (wrappers, proxies) can infer about workloads without touching model weights.
 
-## Requirements
+See OBSERVABILITY.md for setup, tech stack, metrics, and alignment with multimodal AI inspection.
 
-- Python 3.8+
-- NumPy (for simulations)
+## Files
 
-## Test Results
-
-All simulations passing with quantitative metrics:
-- GPU Overflow: 462 floats corrupted (10.2x buffer size)
-- XLA Pass: 4 of 6 tensors exfiltrated (67% of model, 4.0 MB)
-- TPU Memory: 1 of 3 allocations overflowed (33% compromised)
-- Training Spy: 20 of 20 batches captured (100% interception)
-- CISC Injection: 8 malicious instructions compiled
-- DMA Exploit: 2GB claimed vs 0.5GB actual (4x size mismatch)
+| File | Lines | Purpose |
+|------|-------|---------|
+| gpu_poc.py | 11 | GPU buffer overflow demo |
+| dpu_poc.py | 31 | TPU/DPU injection demo |
+| test_gpu_injection.py | 49 | GPU attack surface |
+| test_tpu_injection.py | 82 | TPU attack surface |
+| gpu_wrapper.py | 46 | Process observability |
+| dpu_proxy.py | 46 | HTTP proxy observability |
+| run_dpu_case.py | 36 | Test runner |
+| summarize_results.py | 28 | Results aggregator |
 
 ## Documentation
 
-See `INDEX.md` for:
-- Detailed technical specifications
-- Threat assessment and impact analysis
-- Defense mechanisms and mitigations
-- References and related work
+- **INDEX.md** - GPU/TPU injection research findings, threat model, defenses
+- **OBSERVABILITY.md** - Testbed setup, tech stack, metrics, job alignment
+
+## Requirements
+
+Python 3.8+, NumPy (injection tests), psutil/FastAPI/pandas (observability testbed)
 
 ## Disclaimer
 
-This research is for educational and defensive purposes only. Unauthorized access to computer systems is illegal.
+Educational and defensive purposes only. Unauthorized system access is illegal.
