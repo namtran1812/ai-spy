@@ -170,8 +170,6 @@ Testbed methodology and defensive research framing. Includes:
 - Defense mechanisms
 - Job alignment and research context
 
----
-
 ## Requirements
 
 **Python:** 3.8 or higher
@@ -185,27 +183,6 @@ Testbed methodology and defensive research framing. Includes:
 - uvicorn (ASGI server)
 - pandas (data analysis)
 - NumPy (for simulations)
-
----
-
-## Code Quality & Organization
-
-✅ **Consistency:** All output follows `[COMPONENT]: [METRICS] - SUCCESS` format
-✅ **No Dead Code:** Every import used, every variable reported, every line purposeful
-✅ **Self-Contained:** Each track can run independently
-✅ **Clear Entry Points:** Quick start commands provided for each track
-✅ **Documented Metrics:** All measurements machine-parseable and human-readable
-
----
-
-## Research Contributions
-
-1. **GPU/TPU Attack Surface:** Comprehensive analysis of 6+ injection vectors
-2. **Observability Leakage:** Demonstrates software layer information disclosure
-3. **Multimodal AI Inspection:** Framework for analyzing all components of AI pipelines
-4. **Defensive Recommendations:** Mitigation strategies for each attack class
-
----
 
 ## Running the Full Research
 
@@ -233,21 +210,3 @@ cat ../docs/OBSERVABILITY.md
 
 **Total Runtime:** ~2 minutes
 **Output:** SUCCESS messages, CSV reports, aggregated statistics
-
----
-
-## Disclaimer
-
-This research is for **educational and defensive purposes only**. Unauthorized system access is illegal. The proof-of-concepts demonstrate vulnerabilities to enable defense development. Use responsibly.
-
----
-
-## Citation
-
-If using this research, please cite:
-
-```
-AI Spy: GPU/TPU Injection and Observability Analysis for Multimodal AI Systems
-Research on injection attack vectors and software observability in AI inference pipelines.
-2026
-```
