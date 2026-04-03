@@ -207,6 +207,3 @@ cat results/gpu_metrics.csv
 cat ../docs/INDEX.md
 cat ../docs/OBSERVABILITY.md
 ```
-
-**Total Runtime:** ~2 minutes
-**Output:** SUCCESS messages, CSV reports, aggregated statistics
